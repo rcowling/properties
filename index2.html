@@ -1688,16 +1688,16 @@ function addLayers() {
     
     map.addLayer({
         "id": "hood-filter",
-        "type": "fill",
+        "type": "line",
         "source": "neighborhoods-bwomsn",
         "source-layer": "neighborhoods-bwomsn",
-        "maxzoom": 14,
+        "maxzoom": 20,
        'layout': {
             'visibility': 'visible'
         },
         paint: {
-            'fill-color': 'orange',
-            'fill-opacity': .5,
+            'line-color': 'orange',
+            'line-width': 4,
         },
         'filter': ['==', 'neighborhood', '']
     });
