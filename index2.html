@@ -4,10 +4,10 @@
 <meta charset='utf-8' />
 <title>Display a map</title>
 <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.js'></script>     
+    
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">   
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/css/bootstrap-select.css" />    
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.1.0/mapbox-gl.css' rel='stylesheet' />
+<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.css' rel='stylesheet' />
 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">  
 <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">    
 <script
@@ -15,6 +15,7 @@
   integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
   crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v1.2.1/mapbox-gl.js'></script>   
 <script src="https://cdnjs.cloudflare.com/ajax/libs/proj4js/2.5.0/proj4.js"></script>    
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.1/js/bootstrap-select.min.js"></script>
@@ -82,7 +83,11 @@ body { margin:0; padding:0; }
   background-color: #444;
 }
     
-.navbar {z-index: 10;}    
+.navbar {z-index: 10;} 
+    
+.form-group {
+    margin-bottom: .5rem !important;
+}    
 
 /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
 #main {
@@ -129,7 +134,7 @@ body { margin:0; padding:0; }
     Map Layers
   </button>
   <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">    
-    <a class="dropdown-item" href="#">Neighborhoods</a>
+    <a class="dropdown-item active" href="#">Neighborhoods</a>
     <a class="dropdown-item" href="#">Flood Zones</a>
     <a class="dropdown-item" href="#">Satellite View</a>  
   </div>
@@ -139,19 +144,56 @@ body { margin:0; padding:0; }
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
 <!--    <div id="streetview"></div>-->
     <h3> <span id="title_address">,</span></h3>
-    <span id="boroughlabel"><b>Borough:</b> </span><span id="borough"></span><br>
-    <span id="blocklabel"><b>Block & Lot:</b> </span><span id="block"></span>:<span id="lot"></span><br>     
-    <span id="addlabel"><b>Address:</b> </span><span id="address"></span><br>
-    <span id="yearbuiltlabel"><b>Year Built:</b> </span><span id="yearbuilt"></span><br>
-    <span id="buildingclasslabel"><b>Building Class:</b> </span><span id="buildingclass"></span><br>
-    <span id="numofbuildingslabel"><b>Number of Buildings:</b> </span><span id="numberofbuildings"></span><br>
-    <span id="floorslabel"><b>Number of Floors:</b> </span><span id="numoffloors"></span><br>
-    <span id="squarefootagelabel"><b>Building Square Footage:</b> </span><span id="buildingarea"></span><br>
-    <span id="residentialunitslabel"><b>Residenial Units: </b></span><span id="resunits"></span><br>
-    <span id="unitstotallabel"><b>Total # of Units:</b> </span><span id="numofunits"></span><br>
-    <span id="zoning1label"><b>Zoning 1 & 2: </b></span><span id="zoningdistrict1"></span>
-    <span id="zoning2label"> / </span><span id="zoningdistrict2"></span><br>
-    <span id="boroughlabel"><b>Neighborhood:</b> </span><span id="neighborhood"></span><br><br>
+    <table class="table table-striped table-sm">  
+  <tbody>
+    <tr>
+      <th scope="row">Borough:</th>
+      <td><span id="borough"></span></td>      
+    </tr>
+    <tr>
+      <th scope="row">Block & Lot:</th>
+      <td><span id="block"></span>:<span id="lot"></span><br></td>      
+    </tr>
+    <tr>
+      <th scope="row">Address:</th>
+      <td><span id="address"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Year Built:</th>
+      <td><span id="yearbuilt"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Building Class:</th>
+      <td><span id="buildingclass"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Number of Buildings:</th>
+      <td><span id="numberofbuildings"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Building Square Footage:</th>
+      <td><span id="buildingarea"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Residential Units:</th>
+      <td><span id="resunits"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Total # of Units:</th>
+      <td><span id="numofunits"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Zoning 1 & 2:</th>
+      <td><span id="zoningdistrict1"></span>
+    <span id="zoning2label"> / </span><span id="zoningdistrict2"></span><br></td>      
+    </tr>
+      <tr>
+      <th scope="row">Neighborhood:</th>
+      <td><span id="neighborhood"></span></td>      
+    </tr>
+  </tbody>
+</table>
+    
     <center><button type="button" class="btn btn-outline-primary" style="display: block;">View Full Report</button></center>
 </div>
 <div class="modal" id="myModal" tabindex="-1" role="dialog">
@@ -164,34 +206,45 @@ body { margin:0; padding:0; }
         </button>
       </div>
       <div class="modal-body">
-        <p>Area Search: </p> 
+          <p><b>Area Search:</b> Choose one </p> 
           <div class="form-group row">          
           <div class="form-group col-md-4">
          <input type="text" class="form-control" id="zipcode" placeholder="Zip Code">         
-          </div>
+         </div>
+         </div> 
+          <div class="form-group row"> 
+         <div class="form-group col-md-4">
              <select class="selectpicker" title="Borough" multiple data-live-search="true" multiple data-max-options="1" id="boroughselect">
           <option value="BX">Bronx</option>
           <option value="BK">Brookyln</option>
           <option value="MN">Manhattan</option>
           <option value="SI">Staten Island</option>
           <option value="QN">Queens</option>         
-        </select>         
-          </div> 
+        </select>
+          </div>          
+          </div>
           <div class="form-group row"> 
-          <div class="form-group col-md-8">      
-          <select class="selectpicker" title="Neighborhood" multiple data-live-search="true" multiple data-max-options="1" id="neighborhoodselect">                
-      </select> 
+          <div class="form-group col-md-4">      
+          <select class="selectpicker" title="Neighborhood" multiple data-live-search="true" multiple data-max-options="1" id="neighborhoodselect">            
+          </select> 
               </div>
-              <div class="form-group col-md-12">
+          </div>              
+                  <p><b>Property Type: </b> Choose one or both </p>
+            <div class="form-group row">      
+            <div class="form-group col-md-4">    
             <select class="selectpicker" title="Building Style" multiple data-live-search="true" id="styleselect">
                 <option value="BROWNSTONE">Brownstone</option>
                 <option value="TOWN HOUSE">Town House</option>
                 <option value="ROW">Row</option>
-      </select> 
+            </select> 
+                  </div>
+                    </div>
+          <div class="form-group row">      
+            <div class="form-group col-md-4">   
               <select class="selectpicker" title="Building Class" multiple data-live-search="true" id="classselect">               
-      </select> 
-              </div>
-              </div>         
+              </select> 
+              </div></div>            
+          <p><b>Property Attributes (optional) </b> </p>
           <div class="form-group row">
          <label for="numfloors" class="col-sm-4 col-form-label">Number of Floors: </label>
          <div class="col-sm-3">      
@@ -234,17 +287,24 @@ body { margin:0; padding:0; }
           </div>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-primary" onclick="filterData();" data-dismiss="modal">Apply Filter</button>
-        <button type="button" class="btn btn-secondary" onclick="map.setLayoutProperty('parcels-filter', 'visibility', 'none');" data-dismiss="modal">Reset Filter</button>
+        <button type="button" class="btn btn-primary" onclick="filterData();" data-dismiss="false">Apply Filter</button>
+        <button type="button" class="btn btn-secondary" onclick="resetFilter();" data-dismiss="false">Reset Filter</button>
       </div>
     </div>
   </div>
 </div> 
 <div id="map"></div>     
 <script>
-/* Set the width of the sidebar to 250px and the left margin of the page content to 250px */
+    
+var hoveredStateId =  null;    
+
+// clear the searchbar on click    
+$('#search').click(function () {
+     $('#search').val("");
+});    
+    
 function openNav() {
-  document.getElementById("mySidebar").style.width = "350px";
+  document.getElementById("mySidebar").style.width = "450px";
   //document.getElementById("main").style.marginLeft = "250px";
 }
 
@@ -256,948 +316,1252 @@ function closeNav() {
 $( "#advancedBtn" ).click(function() {
     $('#myModal').modal('show');
 });
-/* Google Street View Test */
-var panorama;
-function initialize() {
-panorama = new google.maps.StreetViewPanorama(
-    document.getElementById('streetview'),
-    {
-      position: {lat: 37.869260, lng: -122.254811},
-      pov: {heading: 165, pitch: 0},
-      zoom: 1
-    });
-}   
+
+$("#neighborhoodselect").change(function() {
+    document.getElementById("boroughselect").disabled = true;
+    document.getElementById("zipcode").disabled = true;
+});
     
 var hood_names = [
   {
-    "neighborhood": "Allerton"
+    "neighborho": "Allerton",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Alley Pond Park"
+    "neighborho": "Baychester",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Arden Heights"
+    "neighborho": "Belmont",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Arlington"
+    "neighborho": "Bronx Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Arrochar"
+    "neighborho": "Bronxdale",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Arverne"
+    "neighborho": "Castle Hill",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Astoria"
+    "neighborho": "City Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bath Beach"
+    "neighborho": "City Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Battery Park City"
+    "neighborho": "Claremont Village",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bay Ridge"
+    "neighborho": "Clason Point",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bay Terrace"
+    "neighborho": "Co-op City",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bay Terrace, Staten Island"
+    "neighborho": "Concourse",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Baychester"
+    "neighborho": "Concourse Village",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bayside"
+    "neighborho": "Country Club",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bayswater"
+    "neighborho": "Crotona Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bayswater"
+    "neighborho": "East Morrisania",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bedford-Stuyvesant"
+    "neighborho": "Eastchester",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Belle Harbor"
+    "neighborho": "Edenwald",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bellerose"
+    "neighborho": "Ferry Point Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Belmont"
+    "neighborho": "Fieldston",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bensonhurst"
+    "neighborho": "Fordham",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bergen Beach"
+    "neighborho": "Hart Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bloomfield"
+    "neighborho": "Highbridge",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Boerum Hill"
+    "neighborho": "Hunts Point",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Borough Park"
+    "neighborho": "Kingsbridge",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Breezy Point"
+    "neighborho": "Longwood",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Briarwood"
+    "neighborho": "Melrose",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Brighton Beach"
+    "neighborho": "Morris Heights",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Morris Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Morrisania",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Mott Haven",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Mount Eden",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Mount Hope",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "North Brother Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "North Riverdale",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Norwood",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Olinville",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Broad Channel"
+    "neighborho": "Parkchester",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bronx Park"
+    "neighborho": "Pelham Bay",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bronxdale"
+    "neighborho": "Pelham Bay Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Brooklyn Heights"
+    "neighborho": "Pelham Bay Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Brownsville"
+    "neighborho": "Pelham Bay Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bull's Head"
+    "neighborho": "Pelham Gardens",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Bushwick"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Cambria Heights"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Canarsie"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Carroll Gardens"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Castle Hill"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Castleton Corners"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Central Park"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Charleston"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Chelsea"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Chelsea, Staten Island"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Chinatown"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "City Island"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "City Island"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Civic Center"
+    "neighborho": "Pelham Islands",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Claremont Village"
+    "neighborho": "Port Morris",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Clason Point"
+    "neighborho": "Rikers Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Clifton"
+    "neighborho": "Riverdale",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Clinton Hill"
+    "neighborho": "Schuylerville",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Co-op City"
+    "neighborho": "Soundview",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Cobble Hill"
+    "neighborho": "South Brother Island",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "College Point"
+    "neighborho": "Spuyten Duyvil",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Columbia St"
+    "neighborho": "Throgs Neck",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Concord"
+    "neighborho": "Tremont",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Concourse"
+    "neighborho": "Unionport",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Concourse Village"
+    "neighborho": "University Heights",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Coney Island"
+    "neighborho": "Van Cortlandt Park",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Corona"
+    "neighborho": "Van Nest",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Country Club"
+    "neighborho": "Wakefield",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Crotona Park"
+    "neighborho": "West Farms",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Crown Heights"
+    "neighborho": "Westchester Square",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Cunningham Park"
+    "neighborho": "Williamsbridge",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "Cypress Hills"
+    "neighborho": "Woodlawn",
+    "borough": "Bronx"
   },
   {
-    "neighborhood": "DUMBO"
+    "neighborho": "Bath Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Ditmars Steinway"
+    "neighborho": "Bay Ridge",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Dongan Hills"
+    "neighborho": "Bedford-Stuyvesant",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Douglaston"
+    "neighborho": "Bensonhurst",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Downtown Brooklyn"
+    "neighborho": "Bergen Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Dyker Heights"
+    "neighborho": "Boerum Hill",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East Elmhurst"
+    "neighborho": "Borough Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East Flatbush"
+    "neighborho": "Brighton Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East Harlem"
+    "neighborho": "Brooklyn Heights",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East Morrisania"
+    "neighborho": "Brownsville",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East New York"
+    "neighborho": "Bushwick",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "East Village"
+    "neighborho": "Canarsie",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Eastchester"
+    "neighborho": "Carroll Gardens",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Edenwald"
+    "neighborho": "Clinton Hill",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Edgemere"
+    "neighborho": "Cobble Hill",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Ellis Island"
+    "neighborho": "Columbia St",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Elmhurst"
+    "neighborho": "Coney Island",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Eltingville"
+    "neighborho": "Crown Heights",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Emerson Hill"
+    "neighborho": "Cypress Hills",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Far Rockaway"
+    "neighborho": "DUMBO",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Ferry Point Park"
+    "neighborho": "Downtown Brooklyn",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fieldston"
+    "neighborho": "Dyker Heights",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Financial District"
+    "neighborho": "East Flatbush",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Flatbush"
+    "neighborho": "East New York",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Flatiron District"
+    "neighborho": "Flatbush",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Flatlands"
+    "neighborho": "Flatlands",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Floral Park"
+    "neighborho": "Floyd Bennett Field",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Floyd Bennett Field"
+    "neighborho": "Fort Greene",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Flushing"
+    "neighborho": "Fort Hamilton",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Flushing Meadows Corona Park"
+    "neighborho": "Gerritsen Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fordham"
+    "neighborho": "Gowanus",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Forest Hills"
+    "neighborho": "Gravesend",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Forest Park"
+    "neighborho": "Green-Wood Cemetery",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fort Greene"
+    "neighborho": "Greenpoint",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fort Hamilton"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fort Wadsworth"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Fresh Meadows"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Freshkills Park"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Gerritsen Beach"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Glen Oaks"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Glendale"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Governors Island"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Gowanus"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Gramercy"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Graniteville"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Grant City"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Gravesend"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Great Kills"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Great Kills Park"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Green-Wood Cemetery"
+    "neighborho": "Jamaica Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Greenpoint"
+    "neighborho": "Kensington",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Greenwich Village"
+    "neighborho": "Manhattan Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Grymes Hill"
+    "neighborho": "Marine Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Harlem"
+    "neighborho": "Marine Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hart Island"
+    "neighborho": "Marine Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hell's Kitchen"
+    "neighborho": "Midwood",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Highbridge"
+    "neighborho": "Mill Basin",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hoffman Island"
+    "neighborho": "Navy Yard",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hollis"
+    "neighborho": "Park Slope",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hollis Hills"
+    "neighborho": "Plum Beach",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Holliswood"
+    "neighborho": "Prospect Heights",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Howard Beach"
+    "neighborho": "Prospect Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Howard Beach"
+    "neighborho": "Prospect-Lefferts Gardens",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Howland Hook"
+    "neighborho": "Red Hook",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Huguenot"
+    "neighborho": "Sea Gate",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Hunts Point"
+    "neighborho": "Sheepshead Bay",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Inwood"
+    "neighborho": "South Slope",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Jackson Heights"
+    "neighborho": "Sunset Park",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Jamaica"
+    "neighborho": "Vinegar Hill",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Williamsburg",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Windsor Terrace",
+    "borough": "Brooklyn"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Battery Park City",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Central Park",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Chelsea",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Chinatown",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Civic Center",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "East Harlem",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "East Village",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Ellis Island",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Financial District",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Flatiron District",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Governors Island",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Gramercy",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Greenwich Village",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Bay"
+    "neighborho": "Harlem",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Estates"
+    "neighborho": "Hell's Kitchen",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Jamaica Hills"
+    "neighborho": "Inwood",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "John F. Kennedy International Airport"
+    "neighborho": "Kips Bay",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Kensington"
+    "neighborho": "Liberty Island",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Kew Gardens"
+    "neighborho": "Little Italy",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Kew Gardens Hills"
+    "neighborho": "Lower East Side",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Kingsbridge"
+    "neighborho": "Marble Hill",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Kips Bay"
+    "neighborho": "Midtown",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "LaGuardia Airport"
+    "neighborho": "Morningside Heights",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Latourette Park"
+    "neighborho": "Murray Hill",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Laurelton"
+    "neighborho": "NoHo",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Liberty Island"
+    "neighborho": "Nolita",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Lighthouse Hill"
+    "neighborho": "Randall's Island",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Little Italy"
+    "neighborho": "Roosevelt Island",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Little Neck"
+    "neighborho": "SoHo",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Long Island City"
+    "neighborho": "Stuyvesant Town",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Longwood"
+    "neighborho": "Theater District",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Lower East Side"
+    "neighborho": "Tribeca",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Manhattan Beach"
+    "neighborho": "Two Bridges",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Marble Hill"
+    "neighborho": "Upper East Side",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Marine Park"
+    "neighborho": "Upper West Side",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Marine Park"
+    "neighborho": "Washington Heights",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Marine Park"
+    "neighborho": "West Village",
+    "borough": "Manhattan"
   },
   {
-    "neighborhood": "Mariners Harbor"
+    "neighborho": "Alley Pond Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Maspeth"
+    "neighborho": "Arverne",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Melrose"
+    "neighborho": "Astoria",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Middle Village"
+    "neighborho": "Bay Terrace",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Midland Beach"
+    "neighborho": "Bayside",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Midtown"
+    "neighborho": "Bayswater",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Midwood"
+    "neighborho": "Bayswater",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Mill Basin"
+    "neighborho": "Belle Harbor",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Morningside Heights"
+    "neighborho": "Bellerose",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Morris Heights"
+    "neighborho": "Breezy Point",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Morris Park"
+    "neighborho": "Briarwood",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Morrisania"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Mott Haven"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Mount Eden"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Mount Hope"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Murray Hill"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Navy Yard"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Neponsit"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "New Brighton"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "New Dorp"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "New Dorp Beach"
+    "neighborho": "Broad Channel",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "New Springville"
+    "neighborho": "Cambria Heights",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "NoHo"
+    "neighborho": "College Point",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Nolita"
+    "neighborho": "Corona",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "North Brother Island"
+    "neighborho": "Cunningham Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "North Riverdale"
+    "neighborho": "Ditmars Steinway",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Norwood"
+    "neighborho": "Douglaston",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Oakwood"
+    "neighborho": "East Elmhurst",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Olinville"
+    "neighborho": "Edgemere",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Ozone Park"
+    "neighborho": "Elmhurst",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Park Hill"
+    "neighborho": "Far Rockaway",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Park Slope"
+    "neighborho": "Floral Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Parkchester"
+    "neighborho": "Flushing",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Bay"
+    "neighborho": "Flushing Meadows Corona Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Bay Park"
+    "neighborho": "Forest Hills",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Bay Park"
+    "neighborho": "Forest Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Bay Park"
+    "neighborho": "Fresh Meadows",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Gardens"
+    "neighborho": "Glen Oaks",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Glendale",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Hollis",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Hollis Hills",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Holliswood",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Howard Beach",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Howard Beach",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Jackson Heights",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Jamaica",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Jamaica Estates",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Jamaica Hills",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "John F. Kennedy International Airport",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Kew Gardens",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "Kew Gardens Hills",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pelham Islands"
+    "neighborho": "LaGuardia Airport",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Pleasant Plains"
+    "neighborho": "Laurelton",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Plum Beach"
+    "neighborho": "Little Neck",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Port Ivory"
+    "neighborho": "Long Island City",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Port Morris"
+    "neighborho": "Maspeth",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Port Richmond"
+    "neighborho": "Middle Village",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Prince's Bay"
+    "neighborho": "Neponsit",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Prospect Heights"
+    "neighborho": "Ozone Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Prospect Park"
+    "neighborho": "Queens Village",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Prospect-Lefferts Gardens"
+    "neighborho": "Rego Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Queens Village"
+    "neighborho": "Richmond Hill",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Randall Manor"
+    "neighborho": "Ridgewood",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Randall's Island"
+    "neighborho": "Rockaway Beach",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Red Hook"
+    "neighborho": "Rockaway Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Rego Park"
+    "neighborho": "Rosedale",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Richmond Hill"
+    "neighborho": "South Ozone Park",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Richmondtown"
+    "neighborho": "Springfield Gardens",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Ridgewood"
+    "neighborho": "St. Albans",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Rikers Island"
+    "neighborho": "Sunnyside",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Riverdale"
+    "neighborho": "Whitestone",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Rockaway Beach"
+    "neighborho": "Woodhaven",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Rockaway Park"
+    "neighborho": "Woodside",
+    "borough": "Queens"
   },
   {
-    "neighborhood": "Roosevelt Island"
+    "neighborho": "Arden Heights",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Rosebank"
+    "neighborho": "Arlington",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Rosedale"
+    "neighborho": "Arrochar",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Rossville"
+    "neighborho": "Bay Terrace, Staten Island",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Schuylerville"
+    "neighborho": "Bloomfield",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Sea Gate"
+    "neighborho": "Bull's Head",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Sheepshead Bay"
+    "neighborho": "Castleton Corners",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Shore Acres"
+    "neighborho": "Charleston",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Silver Lake"
+    "neighborho": "Chelsea, Staten Island",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "SoHo"
+    "neighborho": "Clifton",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Soundview"
+    "neighborho": "Concord",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "South Beach"
+    "neighborho": "Dongan Hills",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "South Brother Island"
+    "neighborho": "Eltingville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "South Ozone Park"
+    "neighborho": "Emerson Hill",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "South Slope"
+    "neighborho": "Fort Wadsworth",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Springfield Gardens"
+    "neighborho": "Freshkills Park",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Spuyten Duyvil"
+    "neighborho": "Graniteville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "St. Albans"
+    "neighborho": "Grant City",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "St. George"
+    "neighborho": "Great Kills",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Stapleton"
+    "neighborho": "Great Kills Park",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Stuyvesant Town"
+    "neighborho": "Grymes Hill",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Sunnyside"
+    "neighborho": "Hoffman Island",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Sunset Park"
+    "neighborho": "Howland Hook",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Theater District"
+    "neighborho": "Huguenot",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Throgs Neck"
+    "neighborho": "Latourette Park",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Todt Hill"
+    "neighborho": "Lighthouse Hill",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Tompkinsville"
+    "neighborho": "Mariners Harbor",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Tottenville"
+    "neighborho": "Midland Beach",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Tremont"
+    "neighborho": "New Brighton",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Tribeca"
+    "neighborho": "New Dorp",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Two Bridges"
+    "neighborho": "New Dorp Beach",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Unionport"
+    "neighborho": "New Springville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "University Heights"
+    "neighborho": "Oakwood",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Upper East Side"
+    "neighborho": "Park Hill",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Upper West Side"
+    "neighborho": "Pleasant Plains",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Van Cortlandt Park"
+    "neighborho": "Port Ivory",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Van Nest"
+    "neighborho": "Port Richmond",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Vinegar Hill"
+    "neighborho": "Prince's Bay",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Wakefield"
+    "neighborho": "Randall Manor",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Washington Heights"
+    "neighborho": "Richmondtown",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "West Brighton"
+    "neighborho": "Rosebank",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "West Farms"
+    "neighborho": "Rossville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "West Village"
+    "neighborho": "Shore Acres",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Westchester Square"
+    "neighborho": "Silver Lake",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Westerleigh"
+    "neighborho": "South Beach",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Whitestone"
+    "neighborho": "St. George",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Williamsbridge"
+    "neighborho": "Stapleton",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Williamsburg"
+    "neighborho": "Todt Hill",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Willowbrook"
+    "neighborho": "Tompkinsville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Windsor Terrace"
+    "neighborho": "Tottenville",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Woodhaven"
+    "neighborho": "West Brighton",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Woodlawn"
+    "neighborho": "Westerleigh",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Woodrow"
+    "neighborho": "Willowbrook",
+    "borough": "Staten Island"
   },
   {
-    "neighborhood": "Woodside"
+    "neighborho": "Woodrow",
+    "borough": "Staten Island"
   }
 ]
     
@@ -1247,76 +1611,76 @@ var building_codes = {"A":"One Family Dwellings","A0":"Cape Cod","A1":"Two Story
                     "V2":"Not Zoned Residential , But Adjacent to Tax Class 1 Dwelling","V3":"Zoned Primarily Residential, Except Not Manhattan below 110 St","V4":" Police or Fire Department","V5":"School Site or Yard",
                     "V6":"Library, Hospitals, or Museums","V7":"Port Authority of NY and NJ","V8":"State & US","V9":"Miscellaneous (Deparment of Real Estate and Other Public Places)",
                     "W":"Educational Structures","W1":"Public Elementary Junior and Senior High Schools","W2":"Parochial Schools, Yeshivas","W3":"Schools or Academies","W4":"Training Schools",
-                    "W5":"City University","W6":"Other Colleges and Universities","W7":"Theological Seminaries","W8":"Other Private Schools","W9":"Miscellaneous","Y":"Selected Government Installations (Excluding Office Buildings, Training Schools, Academic, Garages, Warehouses, Piers, Air Fields, Vacant Land, Vacant Sites, and Land Under Water and Easments)",
+                    "W5":"City University","W6":"Other Colleges and Universities","W7":"Theological Seminaries","W8":"Other Private Schools","W9":"Miscellaneous","Y":"Selected Government Installations",
                     "Y1":"Fire Department","Y2":"Police Department","Y3":"Prisons, Jails, Houses of Detention","Y4":"Military and Naval","Y5":"Department of Real Estate","Y6":"Department of Sanitation",
                     "Y7":"Department of Ports and Terminals","Y8":"Department of Public Works","Y9":"Department of Environmental Protection","Z":"Miscelleneous","Z0":"Tennis Court, Pool, Shed, etc. Used in Conjunction with Tax Class 1",
                     "Z1":"Court House","Z2":"Public Parking Areas","Z3":"Post Office","Z4":"Foreign Governments","Z5":"United Nations","Z6":"Land Under Water","Z7":"Easements","Z8":"Cemetaries","Z9":"Other"
                 };
-var borough_codes = {"MN":"Manhattan","QN":"Queens","SI":"Staten Island","BK":"Brooklyn","BX":"Bronx"};    
+var borough_codes = {"MN":"Manhattan","QN":"Queens","SI":"Staten Island","BK":"Brooklyn","BX":"Bronx"}; 
+//var boroughs_codes_rev = {"Manhattan":"MN", "Queens":"QN", "Staten Island":"SI", "Brooklyn":"BK", "Bronx":"BX"};    
     
 var hoodselect = document.getElementById("neighborhoodselect");
 var classselect = document.getElementById("classselect");    
 
 // Create neighborhoods dropdown list from json array    
 for(var i = 0; i < hood_names.length; i++) {
-    var opt = hood_names[i].neighborhood;    
+    var opt = hood_names[i].neighborho;    
     var el = document.createElement("option");
-    el.textContent = opt;
+    el.textContent = opt + " (" + hood_names[i].borough + ")";
     el.value = opt;
     hoodselect.appendChild(el);
 }     
+
 // Create building codes list for dropdown from json object    
 Object.keys(building_codes).forEach(function(key) {
     var el = document.createElement("option");
-    el.textContent = key;
+    el.textContent = "(" + key + ") " + building_codes[key];
     el.value = key;
     classselect.appendChild(el);
-})    
+});    
     
 function afterChangeComplete () {
-  if (!map.loaded()) { return } // still not loaded; bail out.
+    if (!map.loaded()) { return } // still not loaded; bail out.
+    // now that the map is loaded, it's safe to query the features:
+    var features = map.queryRenderedFeatures({ layers: ['parcels-click']});
+    var borough = borough_codes[features[0].properties.Borough];
+    var block = features[0].properties.Block;
+    var lot = features[0].properties.Lot;
+    var address = features[0].properties.Address;
+    var yearBuilt = features[0].properties.YearBuilt;
+    var buildingClass = building_codes[features[0].properties.BldgClass[0]] + ' ' + building_codes[features[0].properties.BldgClass]
+    var numBuildings = features[0].properties.NumBldgs;
+    var numFloors = features[0].properties.NumFloors;
+    var buildingArea = features[0].properties.BldgArea;
+    var resUnits = features[0].properties.UnitsRes;
+    var totalUnits = features[0].properties.UnitsTotal;
+    var zoningDist1 = features[0].properties.ZoneDist1;
+    var zoningDist2 = features[0].properties.ZoneDist2;
+    var zipCode = features[0].properties.ZipCode;
+    var neighborhood = features[0].properties.neighborho;
+    // pass the propery values to html elements
+    $('#borough').html(borough);
+    $('#block').html(block);
+    $('#lot').html(lot);
+    $('#address').html(address);
+    $('#yearbuilt').html(yearBuilt);
+    $('#buildingclass').html(buildingClass);
+    $('#numberofbuildings').html(numBuildings);
+    $('#numoffloors').html(numFloors);
+    $('#buildingarea').html(buildingArea);
+    $('#resunits').html(resUnits);
+    $('#numofunits').html(totalUnits);
+    $('#zoningdistrict1').html(zoningDist1);
+    $('#zoningdistrict2').html(zoningDist2);
+    $('#neighborhood').html(neighborhood);
+    $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
+    $('#borough_title').html(borough);
+    $('#zip_title').html(zipCode);
 
-  // now that the map is loaded, it's safe to query the features:
-  var features = map.queryRenderedFeatures({ layers: ['parcels-click']});
-console.log(features);
-            var borough = features[0].properties.Borough;
-            var block = features[0].properties.Block;
-            var lot = features[0].properties.Lot;
-            var address = features[0].properties.Address;
-            var yearBuilt = features[0].properties.YearBuilt;
-            var buildingClass = features[0].properties.BldgClass;
-            var numBuildings = features[0].properties.NumBldgs;
-            var numFloors = features[0].properties.NumFloors;
-            var buildingArea = features[0].properties.BldgArea;
-            var resUnits = features[0].properties.UnitsRes;
-            var totalUnits = features[0].properties.UnitsTotal;
-            var zoningDist1 = features[0].properties.ZoneDist1;
-            var zoningDist2 = features[0].properties.ZoneDist2;
-            var zipCode = features[0].properties.ZipCode;
-            var neighborhood = features[0].properties.neighborho;
-            // pass the propery values to html elements
-            $('#borough').html(borough);
-            $('#block').html(block);
-            $('#lot').html(lot);
-            $('#address').html(address);
-            $('#yearbuilt').html(yearBuilt);
-            $('#buildingclass').html(buildingClass);
-            $('#numberofbuildings').html(numBuildings);
-            $('#numoffloors').html(numFloors);
-            $('#buildingarea').html(buildingArea);
-            $('#resunits').html(resUnits);
-            $('#numofunits').html(totalUnits);
-            $('#zoningdistrict1').html(zoningDist1);
-            $('#zoningdistrict2').html(zoningDist2);
-            $('#neighborhood').html(neighborhood);
-            $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
-            $('#borough_title').html(borough);
-            $('#zip_title').html(zipCode);
-            
-            // open the navbar
-            openNav();    
+    // open the navbar
+    openNav();    
 
-  map.off('render', afterChangeComplete); // remove this handler now that we're done.
+    map.off('render', afterChangeComplete); // remove this handler now that we're done.
 }    
     
 /* NYC Geosearch API Autocomplete */    
@@ -1378,14 +1742,14 @@ $(".dropdown-menu a").click(function(){
             $(this).addClass('active');
         }        
     } else if ($(this).text() == 'Neighborhoods') {
-        var hoodLayerIds = [ 'neighborhoods' ];
+        var hoodLayerIds = [ 'neighborhoods_line' ];
         for (var i = 0; i < hoodLayerIds.length; i++) {
             var id = hoodLayerIds[i];
             if (map.getLayoutProperty(id, 'visibility') === 'visible') {
                 map.setLayoutProperty(id, 'visibility', 'none');
-                $(this).addClass("active");
-            } else {
                 $(this).removeClass("active");
+            } else {
+                $(this).addClass("active");
                 map.setLayoutProperty(id, 'visibility', 'visible');
             }
         }
@@ -1411,7 +1775,7 @@ function switchLayer() {
   let str = currentStyle[0].name;
   str = str.replace(/\s+/g, '-').toLowerCase();  
   if (str == 'mapbox-streets') {      
-      map.setStyle('mapbox://styles/mapbox/satellite-streets-v9');       
+      map.setStyle('mapbox://styles/mapbox/satellite-streets-v11?optimize=true');       
       map.on('style.load', function() {
           if (!map.getSource('pluto2-83u0r9')) {
              // Add the parcels and boundaries back to the map when the base layer is changed  
@@ -1438,7 +1802,7 @@ function filterData () {
     var zipcode_val = $("#zipcode").val();
     var style_val = $("#styleselect").val();
     var codes_val = $("#classselect").val(); 
-    console.log(num_floors_min_val);
+    
     if (!num_floors_min_val) {    
         var floorsMinFilter = ["!=", ['get', 'NumFloors'], num_floors_min_val]; 
     } else {
@@ -1509,33 +1873,58 @@ function filterData () {
         var codesFilter = ['match', ['get', 'BldgClass'], codes_val, true, false];   
     }    
     map.setLayoutProperty('parcels-filter', 'visibility', 'visible');
-    var combinedFilter = ["all", floorsMinFilter, floorsMaxFilter, squareFtMinFilter, squareFtMaxFilter, unitsMinFilter, unitsMaxFilter, yearBuiltMinFilter, yearBuiltMaxFilter, zipCodeFilter, boroughFilter, codesFilter, styleFilter, hoodFilter];
-    
-    $.ajax({
-dataType: "json",
-url: "hoodsnew.geojson",
-success: function(data) {
-    $(data.features).each(function(key, data) {
-        console.log(data.properties);
-        console.log(hood_val);
-       if (data.properties.neighborhood == hood_val) {
-           map.jumpTo({
-        center: [data.properties.xcoord, data.properties.ycoord],
-        zoom: 14,
-        //speed: 2,
-        //curve: 1,  
-      });
-       }
-    });
-}
-})
-    
-    var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
-    
-    map.setFilter('hood-filter', ['match', ['get', 'neighborhood'], hood_val, true, false]);
-    map.setFilter('parcels-filter', combinedFilter );
+    map.setLayoutProperty('hood-filter', 'visibility', 'visible');
+    if (!num_floors_min_val && !num_floors_max_val && !square_footage_min_val && !square_footage_max_val && !num_units_min_val && !num_units_max_val && !year_built_min_val && !year_built_max_val && !zipcode_val && !borough_val && !style_val && !hood_val && !codes_val) {
+        map.setLayoutProperty('parcels-filter', 'visibility', 'none');   
+        map.setLayoutProperty('hood-filter', 'visibility', 'none');
+    }
+    var combinedFilter = ["all", floorsMinFilter, floorsMaxFilter, squareFtMinFilter, squareFtMaxFilter, unitsMinFilter, unitsMaxFilter, yearBuiltMinFilter, yearBuiltMaxFilter, zipCodeFilter, boroughFilter, codesFilter, styleFilter, hoodFilter];  
+    if (!borough_val && !hood_val && !zipcode_val) {
+        alert("Please select a Zip Code, Borough, or Neighborhood.")
+    } else {
+        // if the user select a neighborhood zoom to it
+        $.ajax({
+            dataType: "json",
+            url: "hoodsnew.geojson",
+            success: function(data) {
+                $(data.features).each(function(key, data) {        
+                   if (data.properties.neighborhood == hood_val) {
+                       map.jumpTo({
+                        center: [data.properties.xcoord, data.properties.ycoord],
+                        zoom: 14,
+                        //speed: 2,
+                        //curve: 1,  
+                      });
+                   }
+                });
+            }
+        }) 
+
+        // if the user select a zipcode zoom to it
+        $.ajax({
+            dataType: "json",
+            url: "zips.geojson",
+            success: function(data) {
+                $(data.features).each(function(key, data) {   
+                    console.log(data.properties.xcoord, data.properties.ycoord);
+                   if (data.properties.ZIPCODE == zipcode_val) {
+                       map.jumpTo({
+                        center: [data.properties.xcoord, data.properties.ycoord],
+                        zoom: 14,
+                        //speed: 2,
+                        //curve: 1,  
+                      });
+                   }
+                });
+            }
+        })   
+        map.setFilter('hood-filter', ['match', ['get', 'neighborhood'], hood_val, true, false]);
+        map.setFilter('zip-filter', ["==", ['get','ZIPCODE'], zipcode_val]);
+        map.setFilter('parcels-filter', combinedFilter );
+        $('#myModal').modal('hide');
+    }
     //map.setFilter('parcels_fill', combinedFilter);
-     map.once('zoomend', function() {
+    /* map.once('zoomend', function() {
     var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
          console.log(features);
     features.forEach(function(marker, i) {
@@ -1554,9 +1943,27 @@ success: function(data) {
                     .addTo(map);
             
     });
-     });
-} ;   
+     });*/
+} ;  
     
+// reset the filter and all search values    
+function resetFilter(){
+    map.setLayoutProperty('parcels-filter', 'visibility', 'none');
+    map.setLayoutProperty('hood-filter', 'visibility', 'none');
+    $("#numfloorsmin").val("");
+    $("#numfloorsmax").val("");
+    $("#sqrfootagemin").val("");
+    $("#sqrfootagemax").val(""); 
+    $("#numunitsmin").val("");
+    $("#numunitsmax").val("");
+    $("#yearbuiltmin").val("");
+    $("#yearbuiltmax").val("");
+    $("#boroughselect").selectpicker('deselectAll');    
+    $('#neighborhoodselect').selectpicker('deselectAll');
+    $("#zipcode").val("");
+    $("#styleselect").selectpicker('deselectAll');
+    $("#classselect").selectpicker('deselectAll');
+}
 // Function creates layers and adds them to the map    
 function addLayers() {
     map.addSource('plutonew-c03oxi', {
@@ -1573,12 +1980,17 @@ function addLayers() {
             'visibility': 'visible'
         },
         paint: {
-            'fill-color': 'transparent',
+            'fill-color': 'blue',            
             'fill-outline-color': 'gray',
+            "fill-opacity": ["case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.5,
+            0
+            ]
         }
     });
  
-   /* map.addLayer({
+    map.addLayer({
         "id": "parcels_line",
         "type": "line",
         "source": "plutonew-c03oxi",
@@ -1588,10 +2000,10 @@ function addLayers() {
         },
         paint: {
             'line-color': 'gray',
-            'line-width': 0,
+            'line-width': .5,
 
         }
-    });*/
+    });
 
     map.addLayer({
         'id': 'parcels-hover',
@@ -1643,23 +2055,29 @@ function addLayers() {
         "type": "fill",
         "source": "neighborhoods-bwomsn",
         "source-layer": "neighborhoods-bwomsn",
-        "maxzoom": 19,
+        "minzoom": 10,
+        "maxzoom": 14,
        'layout': {
             'visibility': 'visible'
         },
         paint: {
-            'fill-color': 'transparent',
+            'fill-color': 'blue',
             'fill-outline-color': 'black',
-            
+             "fill-opacity": ["case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.5,
+            0
+            ]            
         }
-    });
+    }, 'place-city-sm');
     
      map.addLayer({
         "id": "neighborhoods_line",
         "type": "line",
         "source": "neighborhoods-bwomsn",
         "source-layer": "neighborhoods-bwomsn",
-        "maxzoom": 19,
+        "minzoom": 10,
+        "maxzoom": 15,
        'layout': {
             'visibility': 'visible'
         },
@@ -1668,13 +2086,55 @@ function addLayers() {
             'line-width': 2,
 
         }
+    }, 'place-city-sm');
+    
+    map.addSource('boroughs_final', {
+        'type': 'vector',
+        'url': 'mapbox://samtpr.6qk653i8'
     });
     
+    map.addLayer({
+        "id": "boroughs",
+        "type": "fill",
+        "source": "boroughs_final",
+        "source-layer": "boroughs_final",        
+        "maxzoom": 10,
+       'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'fill-color': 'blue',
+            'fill-outline-color': 'black',
+             "fill-opacity": ["case",
+            ["boolean", ["feature-state", "hover"], false],
+            0.5,
+            0
+            ]
+        }
+    }, 'place-city-sm');
+    
+     map.addLayer({
+        "id": "boroughs_line",
+        "type": "line",
+        "source": "boroughs_final",
+        "source-layer": "boroughs_final",
+        "maxzoom": 10,
+       'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'line-color': 'gray',
+            'line-width': 2,
+
+        }
+    }, 'place-city-sm');
+        
     map.addLayer({
         "id": "neighborhoods_hover",
         "type": "line",
         "source": "neighborhoods-bwomsn",
         "source-layer": "neighborhoods-bwomsn",
+        "minzoom": 10,
         "maxzoom": 14,
        'layout': {
             'visibility': 'visible'
@@ -1700,6 +2160,43 @@ function addLayers() {
             'line-width': 4,
         },
         'filter': ['==', 'neighborhood', '']
+    });
+    
+    map.addSource('zips-4a6h9s', {
+        'type': 'vector',
+        'url': 'mapbox://samtpr.a6a5hm1m'
+    });   
+    
+     /*map.addLayer({
+        "id": "zips",
+        "type": "line",
+        "source": "zips-4a6h9s",
+        "source-layer": "zips-4a6h9s",
+        "maxzoom": 20,
+       'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'line-color': 'blue',
+            'line-width': 3,
+        },
+        
+    });*/
+    
+    map.addLayer({
+        "id": "zip-filter",
+        "type": "line",
+        "source": "zips-4a6h9s",
+        "source-layer": "zips-4a6h9s",
+        "maxzoom": 20,
+       'layout': {
+            'visibility': 'visible'
+        },
+        paint: {
+            'line-color': 'green',
+            'line-width': 4,
+        },
+        'filter': ['==', 'ZIPCODE', '']
     });
     
     map.addSource('floodzones-de6f2s', {
@@ -1751,14 +2248,14 @@ function addLayers() {
             }
         },
          'filter': ['==', 'FLD_ZONE', "X"],
-    }, 'place-city-sm'); // Place polygon under these labels.
-}     
+    }, 'place-city-sm'); // Place polygon under these labels.    
+}
 
-mapboxgl.accessToken = 'pk.eyJ1IjoidXRtciIsImEiOiJjams1MTFtN3Ewb3MyM3FteGNmd3h0ejh2In0.6QwIGhuiXVJRv_XOl-KhxA';
+mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtdHByIiwiYSI6ImNqem0xa2Y3czBnOWczaW15NTRidmphM24ifQ._bmCms37UVg2xpKwrQfxBg';
 var map = new mapboxgl.Map({
 	container: 'map',
-	style: 'mapbox://styles/mapbox/streets-v10',
-	zoom: 14,
+	style: 'mapbox://styles/mapbox/streets-v10?optimize=true',
+	zoom: 10,
 	center: [-74.0060, 40.7128]
 });
 
@@ -1791,8 +2288,7 @@ map.on('click', 'parcels_fill', function (e) {
     var zoningDist1 = e.features[0].properties.ZoneDist1;
     var zoningDist2 = e.features[0].properties.ZoneDist2;
     var zipCode = e.features[0].properties.ZipCode;
-    var neighborhood = e.features[0].properties.neighborho;
-    console.log(e.features[0].properties.style_Copy);
+    var neighborhood = e.features[0].properties.neighborho;    
     // pass the propery values to html elements
     $('#borough').html(borough);
     $('#block').html(block);
@@ -1811,11 +2307,30 @@ map.on('click', 'parcels_fill', function (e) {
     $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
     $('#borough_title').html(borough);
     $('#zip_title').html(zipCode);   
-    openNav();
-    console.log(feature);         
+    openNav();            
     map.setFilter('parcels-click', ['==', 'BBL', e.features[0].properties.BBL]);
 }); 
+   
+ //map.setFilter('unclustered-point', ['==', 'style_Copy', 'ROW']);   
+// When the user clicks on a neighborhood zoom into the parcels    
+map.on('click', 'neighborhoods', function (e) {  
+    map.easeTo({
+        center: [e.features[0].properties.xcoord, e.features[0].properties.ycoord],
+        zoom: 14,
+        speed: 2,
+        curve: 1,  
+      }); 
+});
     
+map.on('click', 'boroughs', function (e) {
+    console.log(e.features[0].properties.xcoord);
+    map.easeTo({
+        center: [e.features[0].properties.xcoord, e.features[0].properties.ycoord],
+        zoom: 10,
+        speed: 2,
+        curve: 1,  
+      }); 
+});    
 // Create a popup, but don't add it to the map yet.
 var popup = new mapboxgl.Popup({
 closeButton: false,
@@ -1823,8 +2338,15 @@ closeOnClick: false
 });    
     
 map.on('mousemove', 'parcels_fill', function (e) {
-    // highlight the parcel on mouseover with a BBL property match
-    map.setFilter('parcels-hover', ['==', 'BBL', e.features[0].properties.BBL]);
+    /*// highlight the parcel on mouseover with a BBL property match
+    if (e.features.length > 0) {
+        if (hoveredStateId) {
+            map.setFeatureState({source: 'plutonew-c03oxi', sourceLayer: 'plutonew-c03oxi', id: hoveredStateId}, { hover: false});
+        }
+        hoveredStateId = e.features[0].id;
+        console.log(hoveredStateId);
+        map.setFeatureState({source: 'plutonew-c03oxi', sourceLayer: 'plutonew-c03oxi', id: hoveredStateId}, { hover: true});
+    }*/
     map.getCanvas().style.cursor = 'pointer';
     popup.setLngLat(e.lngLat)
     .setHTML(e.features[0].properties.Address)
@@ -1833,9 +2355,65 @@ map.on('mousemove', 'parcels_fill', function (e) {
 
 // Change it back to a pointer when it leaves.
 map.on('mouseleave', 'parcels_fill', function () {
+   /* if (hoveredStateId) {
+        map.setFeatureState({source: 'plutonew-c03oxi', sourceLayer: 'plutonew-c03oxi', id: hoveredStateId}, { hover: false});
+    }
+    hoveredStateId =  null;*/
     map.getCanvas().style.cursor = '';
     popup.remove();
 }); 
+    
+map.on('mousemove', 'boroughs', function (e) {
+    /*// highlight the parcel on mouseover with a BBL property match
+    if (e.features.length > 0) {
+        if (hoveredStateId) {
+            map.setFeatureState({source: 'boroughs_final', sourceLayer: 'boroughs_final', id: hoveredStateId}, { hover: false});
+        }
+        hoveredStateId = e.features[0].id;
+        console.log(hoveredStateId);
+        map.setFeatureState({source: 'boroughs_final', sourceLayer: 'boroughs_final', id: hoveredStateId}, { hover: true});
+    }*/
+    map.getCanvas().style.cursor = 'pointer';
+    popup.setLngLat(e.lngLat)
+    .setHTML(e.features[0].properties.boro_name)
+    .addTo(map);
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'boroughs', function () {
+    i/*f (hoveredStateId) {
+        map.setFeatureState({source: 'boroughs_final', sourceLayer: 'boroughs_final', id: hoveredStateId}, { hover: false});
+    }
+    hoveredStateId =  null;*/
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+});       
+    
+map.on('mousemove', 'neighborhoods', function (e) {
+    /*// highlight the parcel on mouseover with a BBL property match
+    if (e.features.length > 0) {
+        if (hoveredStateId) {
+            map.setFeatureState({source: 'neighborhoods-bwomsn', sourceLayer: 'neighborhoods-bwomsn', id: hoveredStateId}, { hover: false});
+        }
+        hoveredStateId = e.features[0].id;
+        console.log(hoveredStateId);
+        map.setFeatureState({source: 'neighborhoods-bwomsn', sourceLayer: 'neighborhoods-bwomsn', id: hoveredStateId}, { hover: true});
+    }*/
+    map.getCanvas().style.cursor = 'pointer';
+    popup.setLngLat(e.lngLat)
+    .setHTML(e.features[0].properties.neighborhood)
+    .addTo(map);
+});
+
+// Change it back to a pointer when it leaves.
+map.on('mouseleave', 'neighborhoods', function () {
+    /*if (hoveredStateId) {
+        map.setFeatureState({source: 'neighborhoods-bwomsn', sourceLayer: 'neighborhoods-bwomsn', id: hoveredStateId}, { hover: false});
+    }*/
+    map.getCanvas().style.cursor = '';
+    popup.remove();
+});           
+    
 map.on('mouseenter', 'parcels-hover', function () {
         map.getCanvas().style.cursor = 'pointer';
     });
@@ -1843,18 +2421,8 @@ map.on('mouseenter', 'parcels-hover', function () {
 // Change it back to a pointer when it leaves.
 map.on('mouseleave', 'parcels-hover', function () {
     map.getCanvas().style.cursor = '';
-});   
+});
     
-map.on('mousemove', 'neighborhoods', function (e) {
-        map.setFilter('neighborhoods_hover', ['==', 'neighborhood', e.features[0].properties.neighborhood]);
-        map.getCanvas().style.cursor = 'pointer';
-    });
-
-// Change it back to a pointer when it leaves.
-map.on('mouseleave', 'neighborhoods', function () {
-    map.getCanvas().style.cursor = '';
-});  
-
 map.on('mouseenter', 'flood_zones_min', function () {
         map.getCanvas().style.cursor = 'pointer';
     });
@@ -1871,7 +2439,8 @@ map.on('mouseenter', 'flood_zones_max', function () {
 // Change it back to a pointer when it leaves.
 map.on('mouseleave', 'flood_zones_max', function () {
     map.getCanvas().style.cursor = '';
-});    
+});     
+
 </script>
  
 </body>
