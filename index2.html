@@ -198,7 +198,7 @@ body { margin:0; padding:0; }
   </tbody>
 </table>
     
-    <center><button type="button" class="btn btn-outline-primary" style="display: block;">View Full Report</button></center>
+    <center><button type="button" class="btn btn-outline-primary view-report" style="display: block;">View Full Report</button></center>
 </div>
 <div class="modal" id="myModal" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document">
@@ -322,15 +322,24 @@ $( "#advancedBtn" ).click(function() {
 });
 
 $("#neighborhoodselect").change(function() {
-    document.getElementById("boroughselect").disabled = true;
-    document.getElementById("zipcode").disabled = true;
+    var hoodval = $("#neighborhoodselect").val();  
+        document.getElementById("boroughselect").disabled = true;
+        document.getElementById("zipcode").disabled = true;
+    if (hoodval == "") {
+        document.getElementById("boroughselect").disabled = false;
+        document.getElementById("zipcode").disabled = false;
+    }
 });
     
-$("#broughselect").change(function() {
-    document.getElementById("neighborhoodselect").disabled = true;
-    document.getElementById("zipcode").disabled = true;
-});    
-
+$("#boroughselect").change(function() {
+    var borval = $("#boroughselect").val();    
+        document.getElementById("neighborhoodselect").disabled = true;
+        document.getElementById("zipcode").disabled = true;
+    if (borval == "") {
+        document.getElementById("neighborhoodselect").disabled = false;
+        document.getElementById("zipcode").disabled = false;
+    }
+});
   
 $("#zipcode").keyup(function() {
     var zipcode = $("#zipcode").val();
@@ -343,7 +352,53 @@ $("#zipcode").keyup(function() {
        document.getElementById("boroughselect").disabled = false;
        document.getElementById("neighborhoodselect").disabled = false;  
     }
-});     
+});  
+    
+function populateFields(properties) {
+    var boroCode = properties.BoroCode;
+    var borough = borough_codes[properties.Borough];
+    var block = properties.Block;
+    var lot = properties.Lot;
+    var address = properties.Address;
+    var yearBuilt = properties.YearBuilt;
+    var buildingClass = building_codes[properties.BldgClass[0]] + ' ' + building_codes[properties.BldgClass]
+    var numBuildings = properties.NumBldgs;
+    var numFloors = properties.NumFloors;
+    var buildingArea = properties.BldgArea;
+    var resUnits = properties.UnitsRes;
+    var totalUnits = properties.UnitsTotal;
+    var zoningDist1 = properties.ZoneDist1;
+    var zoningDist2 = properties.ZoneDist2;
+    var zipCode = properties.ZipCode;
+    var neighborhood = properties.neighborho;
+    // pass the propery values to html elements
+
+
+    //Generate report url
+    let reportUrl = '/account/search?type=bbl';
+    reportUrl += '&borough=' + encodeURIComponent(boroCode);
+    reportUrl += '&block=' + encodeURIComponent(block);
+    reportUrl += '&lot=' + encodeURIComponent(lot);
+    $('.view-report').attr('href', reportUrl);
+
+    $('#borough').html(borough);
+    $('#block').html(block);
+    $('#lot').html(lot);
+    $('#address').html(address);
+    $('#yearbuilt').html(yearBuilt);
+    $('#buildingclass').html(buildingClass);
+    $('#numberofbuildings').html(numBuildings);
+    $('#numoffloors').html(numFloors);
+    $('#buildingarea').html(buildingArea);
+    $('#resunits').html(resUnits);
+    $('#numofunits').html(totalUnits);
+    $('#zoningdistrict1').html(zoningDist1);
+    $('#zoningdistrict2').html(zoningDist2);
+    $('#neighborhood').html(neighborhood);
+    $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
+    $('#borough_title').html(borough);
+    $('#zip_title').html(zipCode);
+}    
     
 var hood_names = [
   {
@@ -1666,39 +1721,7 @@ function afterChangeComplete () {
     if (!map.loaded()) { return } // still not loaded; bail out.
     // now that the map is loaded, it's safe to query the features:
     var features = map.queryRenderedFeatures({ layers: ['parcels-click']});
-    var borough = borough_codes[features[0].properties.Borough];
-    var block = features[0].properties.Block;
-    var lot = features[0].properties.Lot;
-    var address = features[0].properties.Address;
-    var yearBuilt = features[0].properties.YearBuilt;
-    var buildingClass = building_codes[features[0].properties.BldgClass[0]] + ' ' + building_codes[features[0].properties.BldgClass]
-    var numBuildings = features[0].properties.NumBldgs;
-    var numFloors = features[0].properties.NumFloors;
-    var buildingArea = features[0].properties.BldgArea;
-    var resUnits = features[0].properties.UnitsRes;
-    var totalUnits = features[0].properties.UnitsTotal;
-    var zoningDist1 = features[0].properties.ZoneDist1;
-    var zoningDist2 = features[0].properties.ZoneDist2;
-    var zipCode = features[0].properties.ZipCode;
-    var neighborhood = features[0].properties.neighborho;
-    // pass the propery values to html elements
-    $('#borough').html(borough);
-    $('#block').html(block);
-    $('#lot').html(lot);
-    $('#address').html(address);
-    $('#yearbuilt').html(yearBuilt);
-    $('#buildingclass').html(buildingClass);
-    $('#numberofbuildings').html(numBuildings);
-    $('#numoffloors').html(numFloors);
-    $('#buildingarea').html(buildingArea);
-    $('#resunits').html(resUnits);
-    $('#numofunits').html(totalUnits);
-    $('#zoningdistrict1').html(zoningDist1);
-    $('#zoningdistrict2').html(zoningDist2);
-    $('#neighborhood').html(neighborhood);
-    $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
-    $('#borough_title').html(borough);
-    $('#zip_title').html(zipCode);
+    populateFields(features[0].properties);
 
     // open the navbar
     openNav();    
@@ -2300,8 +2323,10 @@ map.on('load', function () {
     
 // When a click event occurs on a feature in the parcels layer, open a popup at the
 // location of the feature, with description HTML from its properties.
-map.on('click', 'parcels_fill', function (e) {    
-    var feature = e.features[0]; //get the properties of the clicked feature
+map.on('click', 'parcels_fill', function (e) {  
+    populateFields(e.features[0].properties);
+    map.easeTo({center: e.lngLat});
+    /*var feature = e.features[0]; //get the properties of the clicked feature
     // break down the individual properties of the click feature
     var borough = borough_codes[e.features[0].properties.Borough];
     var block = e.features[0].properties.Block;
@@ -2335,7 +2360,7 @@ map.on('click', 'parcels_fill', function (e) {
     $('#neighborhood').html(neighborhood);
     $('#title_address').html(address + ', ' + borough + ', NY ' + zipCode );
     $('#borough_title').html(borough);
-    $('#zip_title').html(zipCode);   
+    $('#zip_title').html(zipCode);   */
     openNav();            
     map.setFilter('parcels-click', ['==', 'BBL', e.features[0].properties.BBL]);
 }); 
