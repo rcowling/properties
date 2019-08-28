@@ -171,7 +171,11 @@ body { margin:0; padding:0; }
       <td><span id="numberofbuildings"></span></td>      
     </tr>
       <tr>
-      <th scope="row">Building Square Footage:</th>
+      <th scope="row">Number of Floors:</th>
+      <td><span id="numoffloors"></span></td>      
+    </tr>
+      <tr>
+      <th scope="row">Building Sq Ft:</th>
       <td><span id="buildingarea"></span></td>      
     </tr>
       <tr>
@@ -321,6 +325,25 @@ $("#neighborhoodselect").change(function() {
     document.getElementById("boroughselect").disabled = true;
     document.getElementById("zipcode").disabled = true;
 });
+    
+$("#broughselect").change(function() {
+    document.getElementById("neighborhoodselect").disabled = true;
+    document.getElementById("zipcode").disabled = true;
+});    
+
+  
+$("#zipcode").keyup(function() {
+    var zipcode = $("#zipcode").val();
+    if (zipcode != "") {
+        console.log('disabled');
+        document.getElementById("boroughselect").disabled = true;
+        document.getElementById("neighborhoodselect").disabled = true;
+    } else if (zipcode == "") {    
+        console.log('enabled');
+       document.getElementById("boroughselect").disabled = false;
+       document.getElementById("neighborhoodselect").disabled = false;  
+    }
+});     
     
 var hood_names = [
   {
@@ -1880,7 +1903,9 @@ function filterData () {
     }
     var combinedFilter = ["all", floorsMinFilter, floorsMaxFilter, squareFtMinFilter, squareFtMaxFilter, unitsMinFilter, unitsMaxFilter, yearBuiltMinFilter, yearBuiltMaxFilter, zipCodeFilter, boroughFilter, codesFilter, styleFilter, hoodFilter];  
     if (!borough_val && !hood_val && !zipcode_val) {
-        alert("Please select a Zip Code, Borough, or Neighborhood.")
+        alert("Please select a Zip Code, Borough, or Neighborhood.");
+    } else if (!codes_val) {
+        alert("Please select as least one Building Class.");
     } else {
         // if the user select a neighborhood zoom to it
         $.ajax({
@@ -1922,6 +1947,9 @@ function filterData () {
         map.setFilter('zip-filter', ["==", ['get','ZIPCODE'], zipcode_val]);
         map.setFilter('parcels-filter', combinedFilter );
         $('#myModal').modal('hide');
+        //var features = map.querySourceFeatures({ layers: ['plutonew-c03oxi']});
+        //console.log(features);
+        //console.log(features);
     }
     //map.setFilter('parcels_fill', combinedFilter);
     /* map.once('zoomend', function() {
@@ -1946,6 +1974,7 @@ function filterData () {
      });*/
 } ;  
     
+
 // reset the filter and all search values    
 function resetFilter(){
     map.setLayoutProperty('parcels-filter', 'visibility', 'none');
@@ -2266,7 +2295,7 @@ map.addControl(new mapboxgl.NavigationControl());
 map.addControl(new mapboxgl.ScaleControl({position: 'bottom-right'}));  
 
 map.on('load', function () {    
-    addLayers();
+    addLayers();     
 });
     
 // When a click event occurs on a feature in the parcels layer, open a popup at the
