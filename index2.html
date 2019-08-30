@@ -119,7 +119,18 @@ body { margin:0; padding:0; }
 @media screen and (max-height: 450px) {
   .sidebar {padding-top: 15px;}
   .sidebar a {font-size: 18px;}
-}    
+}  
+@media(max-width: 767px){
+.navbar .ui-widget {
+width: calc(100% - 160px);
+}
+.navbar .ui-autocomplete-input {
+width: 100%;
+}
+.sidebar {
+left: -5px;
+}
+}	
 </style>
 </head>
 <body>
