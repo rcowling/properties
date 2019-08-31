@@ -2350,17 +2350,16 @@ function addLayers() {
          'filter': ['==', 'FLD_ZONE', "X"],
     }, 'place-city-sm'); // Place polygon under these labels. 
     
-    map.addSource('plutopoints', {
+    map.addSource('points5-bbqt67', {
         'type': 'vector',
-        'url': 'mapbox://samtpr.29ejkx9w'
+        'url': 'mapbox://samtpr.0uqqyd02'
     });
     
     map.addLayer({
         id: "points",
         type: "circle",
-        source: "plutopoints",
-        'source-layer': "plutopoints",
-        minzoom: 13,
+        source: "points5-bbqt67",
+        'source-layer': "points5-bbqt67",        
         layout: {
           visibility: 'none',  
         },
