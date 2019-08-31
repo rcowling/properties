@@ -101,10 +101,10 @@ body { margin:0; padding:0; }
           justify-content:center;
           align-items:center;
           box-sizing:border-box;
-          width: 25px;
-          height: 25px;
+          width: 15px;
+          height: 15px;
           color: white;
-          background: #ff580e;
+          background: #4a83ff;
           border: solid 1px;
           border-radius: 100% 100% 100%;              
           cursor: pointer;            
@@ -1740,6 +1740,57 @@ function afterChangeComplete () {
     map.off('render', afterChangeComplete); // remove this handler now that we're done.
 }    
     
+function afterSearchComplete () {
+    if (!map.loaded()) { return } // still not loaded; bail out.
+    // now that the map is loaded, it's safe to query the features:
+   var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
+            console.log(features);
+            if (features.length == 0) {
+                alert("No properties were found matching the search criteria. Please try a different search.")
+            }
+            features.forEach(function(marker, i) {
+                // Create an img element for the marker
+                var el = document.createElement('div');
+                el.id = "marker-" + i;
+                el.className = 'marker';
+                el.innerHTML = '<span><b>' + '' + '</b></span>'    
+                // Add markers to the map at all points
+                var WGS84 = "+proj=longlat +datum=WGS84 +no_defs";
+        var NYSP = "+proj=lcc +lat_1=40.66666666666666 +lat_2=41.03333333333333 +lat_0=40.16666666666666 +lon_0=-74 +x_0=300000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 no_defs";
+        var wgs_coords = proj4(NYSP, WGS84, [marker.properties.XCoord,marker.properties.YCoord]);
+                console.log(wgs_coords);
+                    new mapboxgl.Marker(el, {offset: [0, 0]})
+                        .setLngLat([wgs_coords[0], wgs_coords[1]])
+                        .addTo(map);
+
+            });    
+
+    map.off('render', afterSearchComplete); // remove this handler now that we're done.
+    
+    /*map.on('drag', function(){
+        $( ".marker" ).remove();
+        var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
+            console.log(features);
+            
+            features.forEach(function(marker, i) {
+                // Create an img element for the marker
+                var el = document.createElement('div');
+                el.id = "marker-" + i;
+                el.className = 'marker';
+                el.innerHTML = '<span><b>' + '' + '</b></span>'    
+                // Add markers to the map at all points
+                var WGS84 = "+proj=longlat +datum=WGS84 +no_defs";
+        var NYSP = "+proj=lcc +lat_1=40.66666666666666 +lat_2=41.03333333333333 +lat_0=40.16666666666666 +lon_0=-74 +x_0=300000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 no_defs";
+        var wgs_coords = proj4(NYSP, WGS84, [marker.properties.XCoord,marker.properties.YCoord]);
+                console.log(wgs_coords);
+                    new mapboxgl.Marker(el, {offset: [0, 0]})
+                        .setLngLat([wgs_coords[0], wgs_coords[1]])
+                        .addTo(map);
+
+            });    
+    })*/
+}        
+    
 /* NYC Geosearch API Autocomplete */    
 $(function() {
   function log(message) {
@@ -1964,8 +2015,7 @@ function filterData () {
             dataType: "json",
             url: "zips.geojson",
             success: function(data) {
-                $(data.features).each(function(key, data) {   
-                    console.log(data.properties.xcoord, data.properties.ycoord);
+                $(data.features).each(function(key, data) {                  
                    if (data.properties.ZIPCODE == zipcode_val) {
                        map.jumpTo({
                         center: [data.properties.xcoord, data.properties.ycoord],
@@ -1974,40 +2024,25 @@ function filterData () {
                         //curve: 1,  
                       });
                    }
+                    // map.on('render', afterSearchComplete);
                 });
             }
         })   
         map.setFilter('hood-filter', ['match', ['get', 'neighborhood'], hood_val, true, false]);
         map.setFilter('zip-filter', ["==", ['get','ZIPCODE'], zipcode_val]);
         map.setFilter('parcels-filter', combinedFilter );
-        $('#myModal').modal('hide');
-        //var features = map.querySourceFeatures({ layers: ['plutonew-c03oxi']});
-        //console.log(features);
-        //console.log(features);
+        map.setFilter('points', combinedFilter );
+        map.setLayoutProperty('points', 'visibility', 'visible');
+        $('#myModal').modal('hide'); 
+        
+        var features = map.querySourceFeatures('plutonew-c03oxi',  {filter: ["==", ['get','ZIPCODE'], zipcode_val]});
+        console.log(features);
+       // map.once('zoomend', function(){              
+                 
+           
+        //});
     }
-    //map.setFilter('parcels_fill', combinedFilter);
-    /* map.once('zoomend', function() {
-    var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
-         console.log(features);
-    features.forEach(function(marker, i) {
-            // Create an img element for the marker
-            var el = document.createElement('div');
-            el.id = "marker-" + i;
-            el.className = 'marker';
-                           
-            el.innerHTML = '<span><b>' + '' + '</b></span>'    
-            // Add markers to the map at all points
-            var WGS84 = "+proj=longlat +datum=WGS84 +no_defs";
-    var NYSP = "+proj=lcc +lat_1=40.66666666666666 +lat_2=41.03333333333333 +lat_0=40.16666666666666 +lon_0=-74 +x_0=300000 +y_0=0 +ellps=GRS80 +datum=NAD83 +to_meter=0.3048006096012192 no_defs";
-    var wgs_coords = proj4(NYSP, WGS84, [marker.properties.XCoord,marker.properties.YCoord]);
-                new mapboxgl.Marker(el, {offset: [5, 0]})
-                    .setLngLat([wgs_coords[1], wgs_coords[0]])
-                    .addTo(map);
-            
-    });
-     });*/
-} ;  
-    
+};   
 
 // reset the filter and all search values    
 function resetFilter(){
@@ -2067,6 +2102,8 @@ function addLayers() {
 
         }
     });
+    
+    
 
     map.addLayer({
         'id': 'parcels-hover',
@@ -2311,7 +2348,29 @@ function addLayers() {
             }
         },
          'filter': ['==', 'FLD_ZONE', "X"],
-    }, 'place-city-sm'); // Place polygon under these labels.    
+    }, 'place-city-sm'); // Place polygon under these labels. 
+    
+    map.addSource('plutopoints', {
+        'type': 'vector',
+        'url': 'mapbox://samtpr.29ejkx9w'
+    });
+    
+    map.addLayer({
+        id: "points",
+        type: "circle",
+        source: "plutopoints",
+        'source-layer': "plutopoints",
+        minzoom: 13,
+        layout: {
+          visibility: 'none',  
+        },
+        paint: {
+        "circle-color": "#4a83ff",
+        "circle-radius": 4,
+        "circle-stroke-width": 1,
+        "circle-stroke-color": "#fff"
+        }
+     });  
 }
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtdHByIiwiYSI6ImNqem0xa2Y3czBnOWczaW15NTRidmphM24ifQ._bmCms37UVg2xpKwrQfxBg';
