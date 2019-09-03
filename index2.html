@@ -1743,12 +1743,12 @@ function afterChangeComplete () {
 function afterSearchComplete () {
     if (!map.loaded()) { return } // still not loaded; bail out.
     // now that the map is loaded, it's safe to query the features:
-   var features = map.queryRenderedFeatures({ layers: ['parcels-filter']});
+   var features = map.queryRenderedFeatures({ layers: ['points']});
             console.log(features);
             if (features.length == 0) {
                 alert("No properties were found matching the search criteria. Please try a different search.")
             }
-            features.forEach(function(marker, i) {
+            /*features.forEach(function(marker, i) {
                 // Create an img element for the marker
                 var el = document.createElement('div');
                 el.id = "marker-" + i;
@@ -1763,7 +1763,7 @@ function afterSearchComplete () {
                         .setLngLat([wgs_coords[0], wgs_coords[1]])
                         .addTo(map);
 
-            });    
+            });    */
 
     map.off('render', afterSearchComplete); // remove this handler now that we're done.
     
@@ -2001,7 +2001,7 @@ function filterData () {
                    if (data.properties.neighborhood == hood_val) {
                        map.jumpTo({
                         center: [data.properties.xcoord, data.properties.ycoord],
-                        zoom: 14,
+                        zoom: 12,
                         //speed: 2,
                         //curve: 1,  
                       });
@@ -2019,12 +2019,12 @@ function filterData () {
                    if (data.properties.ZIPCODE == zipcode_val) {
                        map.jumpTo({
                         center: [data.properties.xcoord, data.properties.ycoord],
-                        zoom: 14,
+                        zoom: 12,
                         //speed: 2,
                         //curve: 1,  
                       });
                    }
-                    // map.on('render', afterSearchComplete);
+                     map.on('render', afterSearchComplete);
                 });
             }
         })   
@@ -2033,14 +2033,7 @@ function filterData () {
         map.setFilter('parcels-filter', combinedFilter );
         map.setFilter('points', combinedFilter );
         map.setLayoutProperty('points', 'visibility', 'visible');
-        $('#myModal').modal('hide'); 
-        
-        var features = map.querySourceFeatures('plutonew-c03oxi',  {filter: ["==", ['get','ZIPCODE'], zipcode_val]});
-        console.log(features);
-       // map.once('zoomend', function(){              
-                 
-           
-        //});
+        $('#myModal').modal('hide');        
     }
 };   
 
