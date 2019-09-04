@@ -114,6 +114,9 @@ body { margin:0; padding:0; }
 
         .marker b {transform: rotateZ(135deg)}    
 
+    .bootstrap-select .dropdown-menu li.disabled a {
+        color: black !important;
+    }
       
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
@@ -130,7 +133,8 @@ width: 100%;
 .sidebar {
 left: -5px;
 }
-}	
+}
+    
 </style>
 </head>
 <body>
@@ -227,7 +231,7 @@ left: -5px;
          <input type="text" class="form-control" id="zipcode" placeholder="Zip Code">         
          </div>
          </div> 
-          <div class="form-group row"> 
+          <!--<div class="form-group row"> 
          <div class="form-group col-md-4">
              <select class="selectpicker" title="Borough" multiple data-live-search="true" multiple data-max-options="1" id="boroughselect">
           <option value="BX">Bronx</option>
@@ -237,7 +241,7 @@ left: -5px;
           <option value="QN">Queens</option>         
         </select>
           </div>          
-          </div>
+          </div>-->
           <div class="form-group row"> 
           <div class="form-group col-md-4">      
           <select class="selectpicker" title="Neighborhood" multiple data-live-search="true" multiple data-max-options="1" id="neighborhoodselect">            
@@ -334,15 +338,15 @@ $( "#advancedBtn" ).click(function() {
 
 $("#neighborhoodselect").change(function() {
     var hoodval = $("#neighborhoodselect").val();  
-        document.getElementById("boroughselect").disabled = true;
+        //document.getElementById("boroughselect").disabled = true;
         document.getElementById("zipcode").disabled = true;
     if (hoodval == "") {
-        document.getElementById("boroughselect").disabled = false;
+        //document.getElementById("boroughselect").disabled = false;
         document.getElementById("zipcode").disabled = false;
     }
 });
     
-$("#boroughselect").change(function() {
+/*$("#boroughselect").change(function() {
     var borval = $("#boroughselect").val();    
         document.getElementById("neighborhoodselect").disabled = true;
         document.getElementById("zipcode").disabled = true;
@@ -350,17 +354,17 @@ $("#boroughselect").change(function() {
         document.getElementById("neighborhoodselect").disabled = false;
         document.getElementById("zipcode").disabled = false;
     }
-});
+});*/
   
 $("#zipcode").keyup(function() {
     var zipcode = $("#zipcode").val();
     if (zipcode != "") {
         console.log('disabled');
-        document.getElementById("boroughselect").disabled = true;
+        //document.getElementById("boroughselect").disabled = true;
         document.getElementById("neighborhoodselect").disabled = true;
     } else if (zipcode == "") {    
         console.log('enabled');
-       document.getElementById("boroughselect").disabled = false;
+       //document.getElementById("boroughselect").disabled = false;
        document.getElementById("neighborhoodselect").disabled = false;  
     }
 });  
@@ -1722,9 +1726,38 @@ for(var i = 0; i < hood_names.length; i++) {
 
 // Create building codes list for dropdown from json object    
 Object.keys(building_codes).forEach(function(key) {
-    var el = document.createElement("option");
+    var el = document.createElement("option");    
     el.textContent = "(" + key + ") " + building_codes[key];
     el.value = key;
+    if (key == "A" || key == "B" || key == "C" || key == "D" || key == "E" || key == "F" || key == "G" || key == "H" || key == "I" || key == "J" || key == "K" || key == "L" || key == "M" || key == "N" || key == "O" || key == "P" || key == "Q" || key == "R" || key == "S" || key == "T" || key == "U" || key == "V" || key == "W" || key == "Y" || key == "Z") {
+        el.style.fontWeight = "bold"; 
+        $('option[value=A]').prop('disabled', true);
+        $('option[value=B]').prop('disabled', true);
+        $('option[value=C]').prop('disabled', true);
+        $('option[value=D]').prop('disabled', true);
+        $('option[value=E]').prop('disabled', true);
+        $('option[value=F]').prop('disabled', true);
+        $('option[value=G]').prop('disabled', true);
+        $('option[value=H]').prop('disabled', true);
+        $('option[value=I]').prop('disabled', true);
+        $('option[value=J]').prop('disabled', true);
+        $('option[value=K]').prop('disabled', true);
+        $('option[value=L]').prop('disabled', true);
+        $('option[value=M]').prop('disabled', true);
+        $('option[value=N]').prop('disabled', true);
+        $('option[value=O]').prop('disabled', true);
+        $('option[value=P]').prop('disabled', true);
+        $('option[value=Q]').prop('disabled', true);
+        $('option[value=R]').prop('disabled', true);
+        $('option[value=S]').prop('disabled', true);
+        $('option[value=T]').prop('disabled', true);
+        $('option[value=U]').prop('disabled', true);
+        $('option[value=V]').prop('disabled', true);
+        $('option[value=W]').prop('disabled', true);
+        $('option[value=Y]').prop('disabled', true);
+        $('option[value=Z]').prop('disabled', true);
+        
+    }
     classselect.appendChild(el);
 });    
     
@@ -1956,12 +1989,12 @@ function filterData () {
     } else {
         var zipCodeFilter = ["==", ['get','ZipCode'], Number(zipcode_val)];   
     }
-    if (borough_val.length == 0) {    
+    /*if (borough_val.length == 0) {    
         borough_val = 0;
         var boroughFilter = ['!=', ['get', 'Borough'], borough_val];
     } else {
         var boroughFilter = ['match', ['get', 'Borough'], borough_val, true, false];   
-    }
+    }*/
     if (hood_val.length == 0) {    
         hood_val = 0;
         var hoodFilter = ['!=', ['get', 'neighborho'], hood_val];
@@ -1982,52 +2015,56 @@ function filterData () {
     }    
     map.setLayoutProperty('parcels-filter', 'visibility', 'visible');
     map.setLayoutProperty('hood-filter', 'visibility', 'visible');
-    if (!num_floors_min_val && !num_floors_max_val && !square_footage_min_val && !square_footage_max_val && !num_units_min_val && !num_units_max_val && !year_built_min_val && !year_built_max_val && !zipcode_val && !borough_val && !style_val && !hood_val && !codes_val) {
+    if (!num_floors_min_val && !num_floors_max_val && !square_footage_min_val && !square_footage_max_val && !num_units_min_val && !num_units_max_val && !year_built_min_val && !year_built_max_val && !zipcode_val && !style_val && !hood_val && !codes_val) {
         map.setLayoutProperty('parcels-filter', 'visibility', 'none');   
         map.setLayoutProperty('hood-filter', 'visibility', 'none');
     }
-    var combinedFilter = ["all", floorsMinFilter, floorsMaxFilter, squareFtMinFilter, squareFtMaxFilter, unitsMinFilter, unitsMaxFilter, yearBuiltMinFilter, yearBuiltMaxFilter, zipCodeFilter, boroughFilter, codesFilter, styleFilter, hoodFilter];  
-    if (!borough_val && !hood_val && !zipcode_val) {
-        alert("Please select a Zip Code, Borough, or Neighborhood.");
-    } else if (!codes_val) {
-        alert("Please select as least one Building Class.");
-    } else {
+    var combinedFilter = ["all", floorsMinFilter, floorsMaxFilter, squareFtMinFilter, squareFtMaxFilter, unitsMinFilter, unitsMaxFilter, yearBuiltMinFilter, yearBuiltMaxFilter, zipCodeFilter, codesFilter, styleFilter, hoodFilter];  
+    if (!hood_val && !zipcode_val) {
+        alert("Please select a Zip Code or Neighborhood.");
+    }// else if (!codes_val) {
+        //alert("Please select as least one Building Class.");
+     else {
         // if the user select a neighborhood zoom to it
-        $.ajax({
-            dataType: "json",
-            url: "hoodsnew.geojson",
-            success: function(data) {
-                $(data.features).each(function(key, data) {        
-                   if (data.properties.neighborhood == hood_val) {
-                       map.jumpTo({
-                        center: [data.properties.xcoord, data.properties.ycoord],
-                        zoom: 12,
-                        //speed: 2,
-                        //curve: 1,  
-                      });
-                   }
-                });
-            }
-        }) 
-
+        if (hood_val) {
+            $.ajax({
+                dataType: "json",
+                url: "hoodsnew.geojson",
+                success: function(data) {
+                    $(data.features).each(function(key, data) {        
+                       if (data.properties.neighborhood == hood_val) {
+                           map.jumpTo({
+                            center: [data.properties.xcoord, data.properties.ycoord],
+                            zoom: 12,
+                            //speed: 2,
+                            //curve: 1,  
+                          });
+                       }
+                        map.on('render', afterSearchComplete);
+                    });
+                }
+            }) 
+        }
         // if the user select a zipcode zoom to it
-        $.ajax({
-            dataType: "json",
-            url: "zips.geojson",
-            success: function(data) {
-                $(data.features).each(function(key, data) {                  
-                   if (data.properties.ZIPCODE == zipcode_val) {
-                       map.jumpTo({
-                        center: [data.properties.xcoord, data.properties.ycoord],
-                        zoom: 12,
-                        //speed: 2,
-                        //curve: 1,  
-                      });
-                   }
-                     map.on('render', afterSearchComplete);
-                });
-            }
-        })   
+        if (zipcode_val) {
+            $.ajax({
+                dataType: "json",
+                url: "zips.geojson",
+                success: function(data) {
+                    $(data.features).each(function(key, data) {                  
+                       if (data.properties.ZIPCODE == zipcode_val) {
+                           map.jumpTo({
+                            center: [data.properties.xcoord, data.properties.ycoord],
+                            zoom: 12,
+                            //speed: 2,
+                            //curve: 1,  
+                          });
+                       }
+                         map.on('render', afterSearchComplete);
+                    });
+                }
+            }) 
+        }
         map.setFilter('hood-filter', ['match', ['get', 'neighborhood'], hood_val, true, false]);
         map.setFilter('zip-filter', ["==", ['get','ZIPCODE'], zipcode_val]);
         map.setFilter('parcels-filter', combinedFilter );
@@ -2041,6 +2078,8 @@ function filterData () {
 function resetFilter(){
     map.setLayoutProperty('parcels-filter', 'visibility', 'none');
     map.setLayoutProperty('hood-filter', 'visibility', 'none');
+    document.getElementById("zipcode").disabled = false;
+    document.getElementById("neighborhoodselect").disabled = false;
     $("#numfloorsmin").val("");
     $("#numfloorsmax").val("");
     $("#sqrfootagemin").val("");
@@ -2249,8 +2288,8 @@ function addLayers() {
             'visibility': 'visible'
         },
         paint: {
-            'line-color': 'orange',
-            'line-width': 4,
+            'line-color': '#4a83ff',
+            'line-width': 6,
         },
         'filter': ['==', 'neighborhood', '']
     });
@@ -2358,11 +2397,25 @@ function addLayers() {
         },
         paint: {
         "circle-color": "#4a83ff",
-        "circle-radius": 4,
+        "circle-radius": 8,
         "circle-stroke-width": 1,
         "circle-stroke-color": "#fff"
         }
-     });  
+     }); 
+    
+    /*map.addLayer({
+		"id": "markers",
+		"type": "symbol",		
+		"source": "points5-bbqt67",
+        "source-layer": "points5-bbqt67",
+		"minzoom": 11, // adjust zoom level at which symbols appear
+		"layout": {
+			"icon-image": 'marker',
+			"visibility": "none",
+			"icon-size": .5,
+			"icon-allow-overlap": true
+		}
+	});	*/
 }
 
 mapboxgl.accessToken = 'pk.eyJ1Ijoic2FtdHByIiwiYSI6ImNqem0xa2Y3czBnOWczaW15NTRidmphM24ifQ._bmCms37UVg2xpKwrQfxBg';
@@ -2381,6 +2434,11 @@ map.addControl(new mapboxgl.ScaleControl({position: 'bottom-right'}));
 
 map.on('load', function () {    
     addLayers();     
+    
+    map.loadImage('marker.png', function(error, image) {
+		if (error) throw error;
+		map.addImage('marker', image);
+	});
 });
     
 // When a click event occurs on a feature in the parcels layer, open a popup at the
