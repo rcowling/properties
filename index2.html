@@ -39,14 +39,14 @@
             top: 0;
             left: 0;
             background-color: #fff; /* White*/
-            margin-top: 45px;
+            margin-top: 50px;
             overflow-x: hidden; /* Disable horizontal scroll */
             padding-top: 55px; /* Place content 60px from the top */
             padding-left: 0px;
             transition: 0.5s; /* 0.5 second transition effect to slide in the sidebar */
         }
 
-        /* The sidebar links */
+         The sidebar links 
         .sidebar a:not(.btn) {
             padding: 8px 8px 8px 32px;
             text-decoration: none;
@@ -114,6 +114,15 @@
         }
 
         .marker b {transform: rotateZ(135deg)}
+        
+        .dropdown-menu {
+            
+            min-width: 100px !important;
+        }
+        
+        .dropdown-item {
+            white-space: pre-wrap;
+        }
 
         .bootstrap-select .dropdown-menu li.disabled a {
             color: black !important;
@@ -328,7 +337,7 @@
     function myFunction(x) {
       document.getElementById("mySidebar").style.width = "450px";    
       if (x.matches) { // If media query matches
-         document.getElementById("mySidebar").style.width = "80vw";
+         document.getElementById("mySidebar").style.width = "85vw";
       }       
     }
     
