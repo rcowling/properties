@@ -129,7 +129,13 @@
         }
         
         .bootstrap-select > .dropdown-toggle {
-            width: 180% !important;
+            width: 390px !important;
+            
+        }
+        
+        .dropdown-menu {
+            min-width: 390px !important;
+            
         }
 
         /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
@@ -142,7 +148,11 @@
             #search {width: 91vw !important; margin-bottom: 5px;}
             .sidebar {margin-top: 80px;}
              .bootstrap-select > .dropdown-toggle {
-            width: 85vw !important;
+            width: 84vw !important;
+        }
+            .dropdown-menu {
+            min-width: 84vw !important;
+            
         }
         }
 
@@ -274,6 +284,7 @@
                 <div class="form-group row">
                     <div class="form-group col-md-4">
                         <select class="selectpicker" title="Building Class" multiple data-live-search="true" id="classselect">
+                            
                         </select>
                     </div></div>
                 <p><b>Property Attributes (optional) </b> </p>
